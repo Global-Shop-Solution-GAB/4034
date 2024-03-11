@@ -1,0 +1,377 @@
+Program.Sub.ScreenSU.Start
+gui.Form1..create
+gui.Form1..caption("Work Order Comparison Report")
+gui.Form1..size(4935,3795)
+gui.Form1..minx(0)
+gui.Form1..miny(0)
+gui.Form1..position(0,0)
+gui.Form1..event(unload,form1_unload)
+gui.Form1..alwaysontop(False)
+gui.Form1..fontname("Arial")
+gui.Form1..fontsize(8)
+gui.Form1..forecolor(0)
+gui.Form1..fontstyle(,,,,)
+gui.Form1..BackColor(-2147483633)
+gui.Form1..controlbox(True)
+gui.Form1..maxbutton(True)
+gui.Form1..minbutton(True)
+gui.Form1..mousepointer(0)
+gui.Form1..moveable(True)
+gui.Form1..sizeable(True)
+gui.Form1..ShowInTaskBar(True)
+gui.Form1..titlebar(True)
+gui.Form1.lblStartDate.create(label,"Start Date",True,1935,255,1,200,200,True,0,Arial,8,-2147483633,0)
+gui.Form1.lblStartDate.defaultvalue("")
+gui.Form1.lblStartDate.controlgroup(0)
+gui.Form1.dtpStart.create(datepicker)
+gui.Form1.dtpStart.visible(True)
+gui.Form1.dtpStart.size(1935,285)
+gui.Form1.dtpStart.zorder(0)
+gui.Form1.dtpStart.position(200,600)
+gui.Form1.dtpStart.enabled(True)
+gui.Form1.dtpStart.checkbox(False)
+gui.Form1.dtpStart.defaultvalue("")
+gui.Form1.dtpStart.controlgroup(0)
+gui.Form1.lblEndDate.create(label,"End Date",True,1935,255,1,2525,200,True,0,Arial,8,-2147483633,0)
+gui.Form1.lblEndDate.defaultvalue("")
+gui.Form1.lblEndDate.controlgroup(0)
+gui.Form1.dtpEnd.create(datepicker)
+gui.Form1.dtpEnd.visible(True)
+gui.Form1.dtpEnd.size(1935,285)
+gui.Form1.dtpEnd.zorder(0)
+gui.Form1.dtpEnd.position(2525,600)
+gui.Form1.dtpEnd.enabled(True)
+gui.Form1.dtpEnd.checkbox(False)
+gui.Form1.dtpEnd.defaultvalue("")
+gui.Form1.dtpEnd.controlgroup(0)
+gui.Form1.lblWO.create(label,"Work Order Selection",True,1935,255,1,200,1300,True,0,Arial,8,-2147483633,0)
+gui.Form1.lblWO.defaultvalue("")
+gui.Form1.lblWO.controlgroup(0)
+gui.Form1.optAll.create(option)
+gui.Form1.optAll.caption("All")
+gui.Form1.optAll.visible(True)
+gui.Form1.optAll.size(975,255)
+gui.Form1.optAll.zorder(0)
+gui.Form1.optAll.position(200,1800)
+gui.Form1.optAll.enabled(True)
+gui.Form1.optAll.alignment(0)
+gui.Form1.optAll.fontname("Arial")
+gui.Form1.optAll.fontsize(8)
+gui.Form1.optAll.event(click,optall_click)
+gui.Form1.optAll.defaultvalue("")
+gui.Form1.optAll.controlgroup(0)
+gui.Form1.optClosed.create(option)
+gui.Form1.optClosed.caption("Closed")
+gui.Form1.optClosed.visible(True)
+gui.Form1.optClosed.size(975,255)
+gui.Form1.optClosed.zorder(0)
+gui.Form1.optClosed.position(1400,1800)
+gui.Form1.optClosed.enabled(True)
+gui.Form1.optClosed.alignment(0)
+gui.Form1.optClosed.fontname("Arial")
+gui.Form1.optClosed.fontsize(8)
+gui.Form1.optClosed.event(click,optclosed_click)
+gui.Form1.optClosed.defaultvalue("")
+gui.Form1.optClosed.controlgroup(0)
+gui.Form1.optOpen.create(option)
+gui.Form1.optOpen.caption("Open")
+gui.Form1.optOpen.visible(True)
+gui.Form1.optOpen.size(975,255)
+gui.Form1.optOpen.zorder(0)
+gui.Form1.optOpen.position(2600,1800)
+gui.Form1.optOpen.enabled(True)
+gui.Form1.optOpen.alignment(0)
+gui.Form1.optOpen.fontname("Arial")
+gui.Form1.optOpen.fontsize(8)
+gui.Form1.optOpen.event(click,optopen_click)
+gui.Form1.optOpen.defaultvalue("")
+gui.Form1.optOpen.controlgroup(0)
+gui.Form1.cmdPrint.create(button)
+gui.Form1.cmdPrint.caption("Print")
+gui.Form1.cmdPrint.visible(True)
+gui.Form1.cmdPrint.size(855,375)
+gui.Form1.cmdPrint.zorder(0)
+gui.Form1.cmdPrint.position(200,2400)
+gui.Form1.cmdPrint.enabled(True)
+gui.Form1.cmdPrint.fontname("Arial")
+gui.Form1.cmdPrint.fontsize(8)
+gui.Form1.cmdPrint.event(click,cmdprint_click)
+gui.Form1.cmdPrint.defaultvalue("")
+gui.Form1.cmdPrint.controlgroup(0)
+gui.Form1.lblData.create(label,"",True,2910,255,1,1400,2400,True,0,Arial,8,-2147483633,0)
+gui.Form1.lblData.defaultvalue("")
+gui.Form1.lblData.controlgroup(0)
+
+
+Program.Sub.ScreenSU.End
+
+Program.Sub.Preflight.Start
+
+Variable.Global.sOption.Declare(String)
+Variable.UDT.uJobs.Define("sJob",String,Job)
+Variable.UDT.uJobs.Define("sSuffix",String,Suffix)
+Variable.UDT.uJobs.Define("sPart",String,Part)
+Variable.UDT.uJobs.Define("iQtyOrder",Float,Qty_Order)
+Variable.UDT.uJobs.Define("iQtyComp",Float,Qty_Completed)
+Variable.UDT.uJobs.Define("sType",String)
+Variable.UDT.uJobs.Define("iDollarsEst",Float)
+Variable.UDT.uJobs.Define("iDollarsAct",Float)
+Variable.UDT.uJobs.Define("iHoursEst",Float)
+Variable.UDT.uJobs.Define("iHoursAct",Float)
+Variable.UDT.uJobs.Define("sDate",String,Date_Closed)
+Variable.UDT.uJobs.Define("iBIRUNID",Long)
+Variable.UDT.uJobs.Define("sDesc",String,Description)
+Variable.uGlobal.uJobs.Declare("uJobs")
+
+Variable.UDT.uReport.Define("sJob",String)
+Variable.UDT.uReport.Define("sSuffix",String)
+Variable.UDT.uReport.Define("sPart",String)
+Variable.UDT.uReport.Define("iQtyOrder",Float)
+Variable.UDT.uReport.Define("iQtyComp",Float)
+Variable.UDT.uReport.Define("sType",String)
+Variable.UDT.uReport.Define("iDollarsEst",Float,Dollars_Estimated)
+Variable.UDT.uReport.Define("iDollarsAct",Float,Dollars_Actual)
+Variable.UDT.uReport.Define("iHoursEst",Float,Hours_Estimated)
+Variable.UDT.uReport.Define("iHoursAct",Float,Hours_Actual)
+Variable.UDT.uReport.Define("sDate",String)
+Variable.UDT.uReport.Define("iBIRUNID",Long)
+Variable.UDT.uReport.Define("sDesc",String)
+Variable.uGlobal.uReport.Declare("uReport")
+Variable.Global.iBILogID.Declare(Long,0)
+Variable.Global.iBIRunID.Declare(Long,0)
+Program.Sub.Preflight.End
+
+Program.Sub.Main.Start
+'Quote 6060
+'Created for Superior Metal Products on 10/9/14 by SKT
+'This will create a custom Work Order Comparison Report.
+'The difference being that there will be only one line for Labor, Material, and Outside Sequences
+'This report will not break out the values for each Sequence.
+
+'Open Connection to the Database.
+F.ODBC.Connection!conx.OpenConnection(V.Ambient.PDSN,V.Ambient.PUser,V.Ambient.PPass)
+'Delete the previous report information
+F.ODBC.Connection!conx.OpenLocalRecordsetRW("rst","Delete GCG_4034_Sup_WO_BI")
+'Close the Connection to the Record set
+F.ODBC.conx!rst.Close
+'Show the Form
+Gui.Form1..Show
+
+Program.Sub.Main.End
+
+program.sub.optall_click.start
+
+'If the option all is selected then make sure that the start and end date ranges are enabled.
+'Make sure that the Option Open and Closed are False.
+'Set sOption to A.
+F.Intrinsic.Control.If(V.Screen.Form1!optAll.Value,=,True)
+	Gui.Form1.optOpen.Value(False)
+	Gui.Form1.optClosed.Value(False)
+	Gui.Form1.dtpEnd.Enabled(True)
+	Gui.Form1.dtpStart.Enabled(True)
+	V.Global.sOption.Set("A")
+F.Intrinsic.Control.EndIf
+
+program.sub.optall_click.end
+
+program.sub.optclosed_click.start
+
+'If the Option Closed is selected make sure that the Start Date and End Date are Enabled.
+'Make sure that the Option All and Open are False.
+'Set sOption to C
+F.Intrinsic.Control.If(V.Screen.Form1!optClosed.Value,=,True)
+	Gui.Form1.optAll.Value(False)
+	Gui.Form1.optOpen.Value(False)
+	Gui.Form1.dtpEnd.Enabled(True)
+	Gui.Form1.dtpStart.Enabled(True)
+	V.Global.sOption.Set("C")
+F.Intrinsic.Control.EndIf
+
+program.sub.optclosed_click.end
+
+program.sub.optopen_click.start
+
+'If the option Open is selected then make sure that the Start and End date are Disabled.
+'Make sure that the Option All and Closed are False.
+'Set sOption to O
+F.Intrinsic.Control.If(V.Screen.Form1!optOpen.Value,=,True)
+	Gui.Form1.optAll.Value(False)
+	Gui.Form1.optClosed.Value(False)
+	Gui.Form1.dtpEnd.Enabled(False)
+	Gui.Form1.dtpStart.Enabled(False)
+	V.Global.sOption.Set("O")
+F.Intrinsic.Control.EndIf
+
+program.sub.optopen_click.end
+
+program.sub.cmdprint_click.start
+V.Local.sSql.Declare(String)
+V.Local.dStart.Declare(Date)
+V.Local.dEnd.Declare(Date)
+
+Gui.Form1.lblData.Caption("Getting Data.....")
+
+'Get the BIRUNID
+F.Global.BI.GetRunID(V.Global.iBIRunID)
+'Start Logging
+F.Global.BI.StartLogging(V.Global.iBIRunID,-1,-1,"",V.Global.iBILogID)
+'Save the Start and End Date Range.
+V.Local.dStart.Set(V.Screen.Form1!dtpStart.Value)
+V.Local.dEnd.Set(V.Screen.Form1!dtpEnd.Value)
+
+'Use the Global Variable sOption to gather the Proper records for the Report
+F.Intrinsic.Control.SelectCase(V.Global.sOption)
+
+	'Case C will gather all records that have a closed date between the date range entered by the User.
+	F.Intrinsic.Control.Case("C")
+		V.Local.sSql.Set("Select Job, Suffix, Part, Qty_Order, Qty_Completed, Date_Closed, Description From v_Job_Header where Date_Closed Between '")
+		F.Intrinsic.String.Concat(V.Local.sSql,V.Local.dStart.PervasiveDate,"' and '",V.Local.dEnd.PervasiveDate,"'",V.Local.sSql)
+		F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst",V.Local.sSql)
+		F.Intrinsic.Variable.LoadUDTFromRecordset("conx","rst","v.uGlobal.uJobs",False)
+		'This will determine if the Information is for header information.
+		F.Intrinsic.Variable.UDTSetMemberValue(V.uGlobal.uJobs!sType,"H")
+		F.ODBC.conx!rst.Close
+		'Get the Details of the Job.
+		F.Intrinsic.Control.CallSub(Detail)
+
+	'Case O will gather all records that are Open.  There will not be a Closed date.
+	F.Intrinsic.Control.Case("O")
+		V.Local.sSql.Set("Select Job, suffix, Part, Qty_Order, Qty_Completed, Date_Closed, Description from Job_Header where Date_Closed = '000000'")
+		F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst",V.Local.sSql)
+		F.Intrinsic.Variable.LoadUDTFromRecordset("conx","rst","v.uGlobal.uJobs",False)
+		'This will determine if the information is for header information
+		F.Intrinsic.Variable.UDTSetMemberValue(V.uGlobal.uJobs!sType,"H")
+		F.ODBC.conx!rst.Close
+		'Get the Details of the Job
+		F.Intrinsic.Control.CallSub(Detail)
+
+	'Case A will gather all records that fall between the Closed date range entered by the User, and all Open Jobs.
+	F.Intrinsic.Control.Case("A")
+		V.Local.sSql.Set("Select Job, Suffix, Part, Qty_Order, Qty_Completed, Date_Closed, Description from Job_Header where Date_Closed = '000000'")
+		F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst",V.Local.sSql)
+		F.Intrinsic.Variable.LoadUDTFromRecordset("conx","rst","v.uGlobal.uJobs",False)
+		F.ODBC.conx!rst.Close
+		V.Local.sSql.Set("Select Job, Suffix, Part, Qty_Order, Qty_Completed, Date_Closed, Description From v_Job_Header where Date_Closed Between '")
+		F.Intrinsic.String.Concat(V.Local.sSql,V.Local.dStart.PervasiveDate,"' and '",V.Local.dEnd.PervasiveDate,"'",V.Local.sSql)
+		F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst",V.Local.sSql)
+		F.Intrinsic.Variable.LoadUDTFromRecordset("conx","rst","v.uGlobal.uJobs",True)
+		F.ODBC.conx!rst.Close
+		'This will determine if the information is for header information
+		F.Intrinsic.Variable.UDTSetMemberValue(V.uGlobal.uJobs!sType,"H")
+		'Get the details of the Job
+		F.Intrinsic.Control.CallSub(Detail)
+
+	'Let the user know that Either All, Closed, or Open must be selected.
+	F.Intrinsic.Control.CaseElse
+		F.Intrinsic.UI.Msgbox("Please Make a Work Order Selection!","Work Order Selection")
+F.Intrinsic.Control.EndSelect
+
+Gui.Form1..Visible(False)
+
+'Print.
+F.Intrinsic.Control.CallSub(Callbi)
+
+program.sub.cmdprint_click.end
+
+program.sub.form1_unload.start
+
+'Close the Connection to the Database and end the Program.
+F.ODBC.Connection!conx.Close
+F.Intrinsic.Control.End
+
+program.sub.form1_unload.end
+
+Program.Sub.Detail.Start
+V.Local.sSql.Declare(String)
+V.Local.iCount.Declare(Long)
+V.Local.iCount2.Declare(Long)
+
+V.uGlobal.uReport.Redim(-1,-1)
+
+'Loop through all the Jobs and get the Summary information.
+F.Intrinsic.Control.For(V.Local.iCount,0,V.uGlobal.uJobs.UBound,1)
+	
+	'for All Labor Sequences excluding Misc. Seq. get the Sum of Dollars Estimated, Dollars Actual, Hours Estimated and Hours Actual
+	F.Intrinsic.String.Concat("Select Sum(Dollars_Estimated) as Dollars_Estimated, Sum(Dollars_Actual) as Dollars_Actual, Sum(Hours_Estimated) as Hours_Estimated, Sum(Hours_Actual) as Hours_Actual from Job_Operations where Job = '",V.uGlobal.uJobs(v.Local.iCount)!sJob.Trim,"' and Suffix = '",V.uGlobal.uJobs(v.Local.iCount)!sSuffix.Trim,"' and LMO = 'L' and Seq < '900000'",V.Local.sSql)
+	F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst",V.Local.sSql)
+	F.Intrinsic.Variable.LoadUDTFromRecordset("conx","rst","v.uGlobal.uReport",True)
+	F.ODBC.conx!rst.Close
+	'Save the Job, Suffix and Type
+	V.uGlobal.uReport(v.Local.iCount2)!sJob.Set(V.uGlobal.uJobs(v.Local.iCount)!sJob)
+	V.uGlobal.uReport(v.Local.iCount2)!sSuffix.Set(V.uGlobal.uJobs(v.Local.iCount)!sSuffix)
+	V.uGlobal.uReport(v.Local.iCount2)!sType.Set("L")
+	F.Intrinsic.Math.Add(V.Local.iCount2,1,V.Local.iCount2)
+
+	'For all Material Sequences excluding Misc. Seq get the Sum of dollar Estimated, Dollars Actual, Hours Estimated and Hours Actual
+	F.Intrinsic.String.Concat("Select Sum(Dollars_Estimated) as Dollars_Estimated, Sum(Dollars_Actual) as Dollars_Actual, Sum(Hours_Estimated) as Hours_Estimated, Sum(Hours_Actual) as Hours_Actual from Job_Operations where Job = '",V.uGlobal.uJobs(v.Local.iCount)!sJob.Trim,"' and Suffix = '",V.uGlobal.uJobs(v.Local.iCount)!sSuffix.Trim,"' and LMO = 'M' and Seq < '900000'",V.Local.sSql)
+	F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst",V.Local.sSql)
+	F.Intrinsic.Variable.LoadUDTFromRecordset("conx","rst","v.uGlobal.uReport",True)
+	F.ODBC.conx!rst.Close
+	'save the Job, suffix, and Type
+	V.uGlobal.uReport(v.Local.iCount2)!sJob.Set(V.uGlobal.uJobs(v.Local.iCount)!sJob)
+	V.uGlobal.uReport(v.Local.iCount2)!sSuffix.Set(V.uGlobal.uJobs(v.Local.iCount)!sSuffix)
+	V.uGlobal.uReport(v.Local.iCount2)!sType.Set("M")
+	F.Intrinsic.Math.Add(V.Local.iCount2,1,V.Local.iCount2)
+
+	'For all Outside Sequences excluding Misc. Seq get the Sum of the Dollar Estimated, Dollars Actual, Hours Estimated, and Hours Actual.
+	F.Intrinsic.String.Concat("Select Sum(Dollars_Estimated) as Dollars_Estimated, Sum(Dollars_Actual) as Dollars_Actual, Sum(Hours_Estimated) as Hours_Estimated, Sum(Hours_Actual) as Hours_Actual from Job_Operations where Job = '",V.uGlobal.uJobs(v.Local.iCount)!sJob.Trim,"' and Suffix = '",V.uGlobal.uJobs(v.Local.iCount)!sSuffix.Trim,"' and LMO = 'O' and Seq < '900000'",V.Local.sSql)
+	F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst",V.Local.sSql)
+	F.Intrinsic.Variable.LoadUDTFromRecordset("conx","rst","v.uGlobal.uReport",True)
+	F.ODBC.conx!rst.Close
+	'Save the Job, suffix, and Type
+	V.uGlobal.uReport(v.Local.iCount2)!sJob.Set(V.uGlobal.uJobs(v.Local.iCount)!sJob)
+	V.uGlobal.uReport(v.Local.iCount2)!sSuffix.Set(V.uGlobal.uJobs(v.Local.iCount)!sSuffix)
+	V.uGlobal.uReport(v.Local.iCount2)!sType.Set("O")
+	F.Intrinsic.Math.Add(V.Local.iCount2,1,V.Local.iCount2)
+
+F.Intrinsic.Control.Next(V.Local.iCount)
+'Copy the Header information into the Report UDT.
+F.Intrinsic.Variable.UDTCopy(V.uGlobal.uJobs,V.uGlobal.uReport,True)
+'sort the UDT by the Job and suffix.
+F.Intrinsic.Variable.UDTMultiQuickSort(V.uGlobal.uReport!sJob,False,V.uGlobal.uReport!sSuffix,False)
+
+Program.Sub.Detail.End
+
+Program.Sub.CallBI.Start
+
+V.Local.sParam.Declare(String)
+V.Local.sVal.Declare(String)
+
+'Set the Value for BIRUNID in the UDT
+F.Intrinsic.Variable.UDTSetMemberValue(V.uGlobal.uReport!iBIRUNID,V.Global.iBIRunID)
+F.ODBC.Connection!conx.OpenLocalRecordsetRW("rst","Select * From GCG_4034_Sup_WO_BI")
+'Set Field Reference so the UDT can be saved to the Record set
+F.Intrinsic.Variable.SetUDTFieldReference(V.uGlobal.uReport!sJob,"Job")
+F.Intrinsic.Variable.SetUDTFieldReference(V.uGlobal.uReport!sSuffix,"Suffix")
+F.Intrinsic.Variable.SetUDTFieldReference(V.uGlobal.uReport!sPart,"Part")
+F.Intrinsic.Variable.SetUDTFieldReference(V.uGlobal.uReport!iQtyOrder,"Qty_Order")
+F.Intrinsic.Variable.SetUDTFieldReference(V.uGlobal.uReport!iQtyComp,"Qty_Complete")
+F.Intrinsic.Variable.SetUDTFieldReference(V.uGlobal.uReport!sType,"Type")
+F.Intrinsic.Variable.SetUDTFieldReference(V.uGlobal.uReport!iDollarsEst,"Dollar_Est")
+F.Intrinsic.Variable.SetUDTFieldReference(V.uGlobal.uReport!iDollarsAct,"Dollar_Act")
+F.Intrinsic.Variable.SetUDTFieldReference(V.uGlobal.uReport!iHoursEst,"Hour_Est")
+F.Intrinsic.Variable.SetUDTFieldReference(V.uGlobal.uReport!iHoursAct,"Hour_Act")
+F.Intrinsic.Variable.SetUDTFieldReference(V.uGlobal.uReport!sDate,"Date")
+F.Intrinsic.Variable.SetUDTFieldReference(V.uGlobal.uReport!iBIRUNID,"BIRunID")
+F.Intrinsic.Variable.SetUDTFieldReference(V.uGlobal.uReport!sDesc,"Description")
+
+'Save the UDT to the Record Set
+F.Intrinsic.Variable.SaveUDTToRecordSet("conx","rst","v.uGlobal.uReport")
+'Close the connection to the record Set
+F.ODBC.conx!rst.Close
+'Set sParam and sVal
+V.Local.sParam.Set("BIRUNID")
+V.Local.sVal.Set(V.Global.iBIRunID)
+'Stop Logging
+F.Global.BI.StopLogging(V.Global.iBILogID)
+'Run the report.
+F.Global.BI.RunReportPreProcessor(V.Global.iBIRunID,V.Global.iBILogID,V.Local.sParam,V.Local.sVal,"",-1,True,"",-1,"",-1,"","",V.Global.iBIRunID)
+
+F.Intrinsic.Control.CallSub(Form1_unload)
+
+Program.Sub.CallBI.End
+
+Program.Sub.Comments.Start
+${$0$}$GCG_SUP_WO_Rpt$}$SKT$}$10/6/2014
+Program.Sub.Comments.End
+
